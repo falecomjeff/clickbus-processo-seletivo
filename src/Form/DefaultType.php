@@ -17,11 +17,11 @@ class DefaultType extends AbstractType
             ->add('name')
             ->add('type', ChoiceType::class, array(
                 'choices'  => array(
-                    'Repositórios' => 'Repositórios',
-                    'Códigos'      => 'Códigos',
-                    'Issues'       => 'Issues',
-                    'Usuários'     => 'Usuários',
-                    'Commits'      => 'Commits',
+                    'Repositórios' => 'repositorios',
+                    'Códigos'      => 'codigos',
+                    'Issues'       => 'issues',
+                    'Usuários'     => 'usuarios',
+                    'Commits'      => 'commits',
                 ),
                 'placeholder'  => 'Pesquisar por...',
             ))
