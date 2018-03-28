@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+<div>
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+</div>
+
+<div>
+    {{ form_label(form.type) }}
+    {{ form_widget(form.type) }}
+</div>
+
+<div>
+    {{ form_widget(form.save, { 'label': 'Pesquisar!' }) }}
+</div>
+
+{# {{ form_widget(form) }} #}
+{{ form_end(form) }}
+
+{% endblock %}
