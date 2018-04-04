@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -14,18 +15,16 @@ class DefaultType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('type', ChoiceType::class, array(
-                'choices'  => array(
-                    'Repositórios' => 'repositorios',
-                    'Códigos'      => 'codigos',
-                    'Issues'       => 'issues',
-                    'Usuários'     => 'usuarios',
-                    'Commits'      => 'commits',
+            ->add('name', TextType::class, array(
+                'attr'   => array(
+                    'class' => 'form-control'
                 ),
-                'placeholder'  => 'Pesquisar por...',
             ))
-            ->add('save', SubmitType::class)
+            ->add('save', SubmitType::class, array(
+                'attr'   => array(
+                    'class' => 'btn btn-primary'
+                ),
+            ))
         ;
     }
 
