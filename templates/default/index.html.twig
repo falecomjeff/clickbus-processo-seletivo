@@ -9,8 +9,11 @@
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
         <div class="form-group">
-            {{ form_label(form.name) }}
-            {{ form_widget(form.name) }}
+            {{ form_label(form.q) }}
+            {{ form_widget(form.q) }}
+            {% for error in form.q.vars.errors %}
+                <p class="text-danger">{{ error.message }}</p>
+            {% endfor %}
         </div>
 
         <div class="form-group">
@@ -24,7 +27,7 @@
 {% if results %}
     <div class="row justify-content-md-center">
         <div class="col col-lg-8">
-            <h2>Resultado da pesquisa</h2>
+            <h2>Resultado da pesquisa (Total: {{ results.total_count }})</h2>
         </div>
     </div>
 
@@ -56,27 +59,48 @@
     </div>
 {% endif %}
 
-<!-- Modal -->
-<div class="modal fade" id="modalLong" tabindex="-1" role="dialog" aria-labelledby="modalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLongTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+{% if getPagination %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if getPagination.first is not defined %}disabled{% endif %}">
+                {% if getPagination.first is defined %}
+                    <a class="page-link" href=" {{ getPagination.first }}" tabindex="-1"><<</a>
+                {% else %}
+                    <a class="page-link" href="#" tabindex="-1"><<</a>
+                {% endif %}
+            </li>
 
-            <div class="modal-body">
-                ...
-            </div>
+            <li class="page-item {% if getPagination.prev is not defined %}disabled{% endif %}">
+                {% if getPagination.prev is defined %}
+                    <a class="page-link" href="{{ getPagination.prev }}"><</a>
+                {% else %}
+                    <a class="page-link" href="#"><</a>
+                {% endif %}
+            </li>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+            <li class="page-item active">
+                <span class="page-link">
+                    {{ getPagination.actual }}
+                </span>
+            </li>
+
+            <li class="page-item {% if getPagination.next is not defined %}disabled{% endif %}">
+                {% if getPagination.next is defined %}
+                    <a class="page-link" href="{{ getPagination.next }}">></a>
+                {% else %}
+                    <a class="page-link" href="#">></a>
+                {% endif %}
+            </li>
+
+            <li class="page-item {% if getPagination.last is not defined %}disabled{% endif %}">
+                {% if getPagination.last is defined %}
+                    <a class="page-link" href=" {{ getPagination.last }}" tabindex="-1">>></a>
+                {% else %}
+                    <a class="page-link" href="#" tabindex="-1">>></a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+{% endif %}
 
 {% endblock %}

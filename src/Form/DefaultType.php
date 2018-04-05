@@ -10,13 +10,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 class DefaultType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
-                'attr'   => array(
+            ->add('q', TextType::class, array(
+                'label_format' => 'Nome do repositório',
+                'constraints' => array(
+                    new NotBlank(),
+                    new Length(array('min' => 3)),
+                ),
+                'attr'         => array(
                     'class' => 'form-control'
                 ),
             ))
