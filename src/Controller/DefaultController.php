@@ -23,8 +23,6 @@ class DefaultController extends Controller
         ));
 
         $resultsPerPage = 5;
-        $getPagination  = null;
-        $results        = null;
 
         $form->handleRequest($request);
 
@@ -68,24 +66,31 @@ class DefaultController extends Controller
 
     public function gitHubSearch($q, $resultsPerPage, $page, $sort = null, $order = null)
     {
-        $githubClient = new Client();
-        $paginator    = new ResultPager($githubClient);
-        $search       = array();
+        $githubClient  = new Client();
+        $paginator     = new ResultPager($githubClient);
+        $search        = array();
+        $getPagination = null;
 
         $searchApi  = $githubClient->api('search')->setPerPage($resultsPerPage)->setPage($page);
         $parameters = array($q, $sort, $order);
         $results    = $paginator->fetch($searchApi, 'repositories', $parameters);
 
-        // Prepare variable for use paginate in twig
-        foreach ($paginator->getPagination() as $key => $pagination) {
-            $getPagination[$key] = str_replace('https://api.github.com/search/repositories', '', $pagination);
+        // Prepare variable for use paginate in twig.
+        if ($paginator->getPagination()) {
+            foreach ($paginator->getPagination() as $key => $pagination) {
+                $getPagination[$key] = str_replace(
+                    'https://api.github.com/search/repositories',
+                    '',
+                    $getPagination
+                );
+            }
         }
 
         // Set actual page.
         $getPagination['actual'] = $searchApi->getPage();
 
-        $search['results']                 = $results;
-        $search['getPagination']           = $getPagination;
+        $search['results']       = $results;
+        $search['getPagination'] = $getPagination;
 
         return $search;
     }
