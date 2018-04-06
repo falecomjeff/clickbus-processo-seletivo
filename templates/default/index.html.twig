@@ -18,7 +18,7 @@
         </div>
 
         <div class="form-group">
-            {{ form_widget(form.save, { 'label': 'Pesquisar!' }) }}
+            {{ form_widget(form.save, { 'label': 'search' }) }}
         </div>
 
         {{ form_end(form) }}
@@ -29,7 +29,7 @@
 {% if results %}
     <div class="row justify-content-md-center">
         <div class="col col-lg-8">
-            <h2>Resultado da pesquisa (Total: {{ results.total_count }})</h2>
+            <h2>{% trans %}search.result{% endtrans %} ({% trans %}total{% endtrans %}: {{ results.total_count }})</h2>
         </div>
     </div>
 
@@ -46,11 +46,15 @@
                             <strong>Criado em:</strong> {{ result.created_at|date("d/m/Y") }}
                         </p>
                         <p>
-                            <a href="#{{ result.id }}" class="btn btn-primary btn-sm" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">Detalhes</a>
+                            <a href="#{{ result.id }}" class="btn btn-primary btn-sm" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample">{% trans %}details{% endtrans %}</a>
                         </p>
                         <div class="collapse" id="{{ result.id }}">
                             <div class="card card-body">
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                                {% if result.description %}
+                                    {{ result.description }}
+                                {% else %}
+                                    {% trans %}without.description{% endtrans %}!
+                                {% endif %}
                             </div>
                         </div>
                     </div>

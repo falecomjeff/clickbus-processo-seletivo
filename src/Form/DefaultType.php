@@ -19,7 +19,7 @@ class DefaultType extends AbstractType
     {
         $builder
             ->add('q', TextType::class, array(
-                'label_format' => 'Nome do repositório',
+                'label_format' => 'name.repository',
                 'constraints' => array(
                     new NotBlank(),
                     new Length(array('min' => 3)),
