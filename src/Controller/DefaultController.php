@@ -13,23 +13,32 @@ use App\Form\DefaultType;
 class DefaultController extends Controller
 {
     /**
+     * Initial page, form search and result of search
+     *
      * @Route("/", name="default")
      */
     public function index(Request $request)
     {
-        // Create form for search.
+        // Create search form.
         $form = $this->createForm(DefaultType::class, null, array(
+            'action' => $this->generateUrl('default'),
             'method' => 'POST',
         ));
 
+        // Number of results per page.
         $resultsPerPage = 5;
+        $getPagination  = null;
+        $results        = null;
+
 
         $form->handleRequest($request);
 
-        // If send form, do validate and get search parameter.
+        // If send form, does a validate and get search parameter.
         if ($form->isSubmitted() && $form->isValid()) {
+            // Paramters of search.
             $searchParameters = $form->getData();
 
+            // Execute the search.
             $search = $this->gitHubSearch(
                 $searchParameters['q'],
                 $resultsPerPage,
@@ -42,8 +51,10 @@ class DefaultController extends Controller
             $getPagination = $search['getPagination'];
 
         } elseif ($request->query->get('q')) {
+            // Paramters of search.
             $searchParameters = $request->query->all();
 
+            // Execute the search.
             $search = $this->gitHubSearch(
                 $searchParameters['q'],
                 $resultsPerPage,
@@ -64,12 +75,23 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * Execute a search in Github
+     *
+     * @param string     $q                 the search parameter.
+     * @param integer    $resultsPerPage    the number of results per page.
+     * @param integer    $page              the number of current page.
+     * @param string     $sort              the method of ordination.
+     * @param string     $order             the order of ordination.
+     *
+     * @return array returns the result of search.
+     */
     public function gitHubSearch($q, $resultsPerPage, $page, $sort = null, $order = null)
     {
         $githubClient  = new Client();
         $paginator     = new ResultPager($githubClient);
         $search        = array();
-        $getPagination = null;
+        $getPagination = array();
 
         $searchApi  = $githubClient->api('search')->setPerPage($resultsPerPage)->setPage($page);
         $parameters = array($q, $sort, $order);
@@ -81,7 +103,7 @@ class DefaultController extends Controller
                 $getPagination[$key] = str_replace(
                     'https://api.github.com/search/repositories',
                     '',
-                    $getPagination
+                    $pagination
                 );
             }
         }

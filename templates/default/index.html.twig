@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}ClickBus Github Search!{% endblock %}
 
 {% block body %}
 
+{# Search form #}
 <div class="row justify-content-md-center">
     <div class="col col-lg-3">
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -24,6 +25,7 @@
     </div>
 </div>
 
+{# Search results #}
 {% if results %}
     <div class="row justify-content-md-center">
         <div class="col col-lg-8">
@@ -57,50 +59,52 @@
             {% endfor %}
         </div>
     </div>
+
+    {# Pagination #}
+    {% if getPagination %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if getPagination.first is not defined %}disabled{% endif %}">
+                    {% if getPagination.first is defined %}
+                        <a class="page-link" href=" {{ getPagination.first }}" tabindex="-1"><<</a>
+                    {% else %}
+                        <a class="page-link" href="#" tabindex="-1"><<</a>
+                    {% endif %}
+                </li>
+
+                <li class="page-item {% if getPagination.prev is not defined %}disabled{% endif %}">
+                    {% if getPagination.prev is defined %}
+                        <a class="page-link" href="{{ getPagination.prev }}"><</a>
+                    {% else %}
+                        <a class="page-link" href="#"><</a>
+                    {% endif %}
+                </li>
+
+                <li class="page-item active">
+                    <span class="page-link">
+                        {{ getPagination.actual }}
+                    </span>
+                </li>
+
+                <li class="page-item {% if getPagination.next is not defined %}disabled{% endif %}">
+                    {% if getPagination.next is defined %}
+                        <a class="page-link" href="{{ getPagination.next }}">></a>
+                    {% else %}
+                        <a class="page-link" href="#">></a>
+                    {% endif %}
+                </li>
+
+                <li class="page-item {% if getPagination.last is not defined %}disabled{% endif %}">
+                    {% if getPagination.last is defined %}
+                        <a class="page-link" href=" {{ getPagination.last }}" tabindex="-1">>></a>
+                    {% else %}
+                        <a class="page-link" href="#" tabindex="-1">>></a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
 {% endif %}
 
-{% if getPagination %}
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item {% if getPagination.first is not defined %}disabled{% endif %}">
-                {% if getPagination.first is defined %}
-                    <a class="page-link" href=" {{ getPagination.first }}" tabindex="-1"><<</a>
-                {% else %}
-                    <a class="page-link" href="#" tabindex="-1"><<</a>
-                {% endif %}
-            </li>
-
-            <li class="page-item {% if getPagination.prev is not defined %}disabled{% endif %}">
-                {% if getPagination.prev is defined %}
-                    <a class="page-link" href="{{ getPagination.prev }}"><</a>
-                {% else %}
-                    <a class="page-link" href="#"><</a>
-                {% endif %}
-            </li>
-
-            <li class="page-item active">
-                <span class="page-link">
-                    {{ getPagination.actual }}
-                </span>
-            </li>
-
-            <li class="page-item {% if getPagination.next is not defined %}disabled{% endif %}">
-                {% if getPagination.next is defined %}
-                    <a class="page-link" href="{{ getPagination.next }}">></a>
-                {% else %}
-                    <a class="page-link" href="#">></a>
-                {% endif %}
-            </li>
-
-            <li class="page-item {% if getPagination.last is not defined %}disabled{% endif %}">
-                {% if getPagination.last is defined %}
-                    <a class="page-link" href=" {{ getPagination.last }}" tabindex="-1">>></a>
-                {% else %}
-                    <a class="page-link" href="#" tabindex="-1">>></a>
-                {% endif %}
-            </li>
-        </ul>
-    </nav>
-{% endif %}
 
 {% endblock %}
